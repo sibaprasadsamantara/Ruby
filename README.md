@@ -21,6 +21,31 @@
 
 # CODE: Benchmarking Ruby 2.1.0 string allocation based upon "+", "concate", "<<"
 
+require 'benchmark'
+
+ITERATIONS = 1_00_00_00
+
+def build_new_string(in_str:)
+  ITERATIONS.times do
+    in_str + ("1")
+  end
+end
+
+def run(str:, bench:)
+  bench.report("#{str.length + 1} chars") do
+    build_new_string(in_str: str)    
+  end
+end
+
+Benchmark.bmbm do |bm|
+  run(str: "1234567890123456789", bench: bm)
+  run(str: "12345678901234567890", bench: bm)
+  run(str: "123456789012345678901", bench: bm)
+  run(str: "1234567890123456789012", bench: bm)
+  run(str: "12345678901234567890123", bench: bm)
+  run(str: "123456789012345678901234", bench: bm)
+end
+
 Case while creating new string by using 
 
 "+"
