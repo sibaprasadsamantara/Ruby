@@ -10,13 +10,21 @@
 
 # Whenever we create a string value in Ruby, the interpreter goes through a similar to below mentioned algorithm:
 
-1> Is this a new string value? Or copy of an existing string? If it’s a copy, Ruby creates a String with the same referencec. This is the fastest option, since Ruby only needs a new RString structure.
+1> Is this a new string value? Or copy of an existing string? If it’s a copy, Ruby creates a String with the same 
+referencec.This is the fastest option, since Ruby only needs a new RString structure.
 
-2> Is this a long string? Or short string? If the new string value is 23 characters or less, Ruby creates an Embedded String and this is not as fast as a creating the string with same reference but it’s still fast because the 23 characters are simply copied right into the RString structure and there’s no need to call malloc.calling malloc is an expensive operation because it tracks the available memory and when to free them too.
+2> Is this a long string? Or short string? If the new string value is 23 characters or less, Ruby 
+creates an Embedded String and this is not as fast as a creating the string with same reference but it’s 
+still fast because the 23 characters are simply copied right into the RString structure and there’s no need to 
+call malloc.calling malloc is an expensive operation because it tracks the available memory and when to free them too.
 
-3> Finally, for long string values, 24 characters or more, Ruby creates a Heap String - meaning it calls malloc and gets some new memory from the heap, and then copies the string value there. This is the slowest option and Ruby interpreter always allocates little more memory so that when you change anything to the string it should not call malloc() again.
+3> Finally, for long string values, 24 characters or more, Ruby creates a Heap String - meaning it calls malloc and gets 
+some new memory from the heap, and then copies the string value there. This is the slowest option and Ruby 
+interpreter always allocates little more memory so that when you change anything to the string it should not call malloc() 
+again.
 
-# The value of RSTRING_EMBED_LEN_MAX for a 64-bit macine was chosen to match the size of the len/ptr/capa values i.e where the 23 limit comes from.
+# The value of RSTRING_EMBED_LEN_MAX for a 64-bit macine was chosen to match the size of 
+#the len/ptr/capa values i.e where the 23 limit comes from.
 # Even worse the value of RSTRING_EMBED_LEN_MAX for a 32-bit machine is less i.e only 11. 
 
 # IMPORTANT:
