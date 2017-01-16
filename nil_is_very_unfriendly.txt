@@ -17,19 +17,17 @@ NoMethodError: undefined method `upcase' for nil:NilClass
 
 The user1 object does not have attribute called first_name that's the reason we are getting above error here.
 
-What is the possible solution here
+What are all the possible solutions here
 
 Solution 1:
 
   We can add condition here to call the upcase method i.e 
 
     user1.first_name.upcase if user1.first_name
-    
-    If nil will evaluate the false and upcase method won't be called here
 
  Disadvantages :
 
-   This will lead to structural duplication 
+   This will lead to structural duplication and not a object oriented way because we are taking the decission on behalf of the object.
 
 Solution 2:
 
@@ -41,9 +39,9 @@ Solution 2:
 
   Advantages:
 
-    We have given object to take a decission how to respond to the upcase method.
+    We have given responsibility to the object to take a decission i.e how to respond to upcase method.
     It's an object oriented way
-    Following Tell don't ask principle
+    Supports Tell don't ask principle
     Generic way of handling the nil case 
     Implementation of polymorphism
 
