@@ -15,7 +15,7 @@ user1.first_name.upcase
 NoMethodError: undefined method `upcase' for nil:NilClass
 
 
-The user1 object does not attribute called first_name that's the reason we are getting above error here.
+The user1 object does not have attribute called first_name that's the reason we are getting above error here.
 
 What is the possible solution here
 
