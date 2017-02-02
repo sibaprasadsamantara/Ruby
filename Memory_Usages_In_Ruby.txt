@@ -1,0 +1,115 @@
+Memory management in Ruby by GC
+===============================
+   Stack - It's a temp memory allocated to each function of your stack.ruby developer doesn't do this, VM does this for us and it's not exposed to ruby programmer. 
+   Heap -  All the objects we are creating in ruby are allocated by Heap memory and It's just machine memory heap, ruby heap was inside this machine memory Heap and all objects points to the outer system Heap and this ruby heap was managed by the Garbage collector i.e GC
+
+Garbage Collector - GC
+======================
+When we deal with the scaling issues and tunning issues in the application then it's a time to look into Garbage Collector i.e GC
+There are two sides of GC i.e Collection and Allocation Algoritham and introspection API and tunning variables.
+
+Types of MRI Collection and Allocation Algoritham
+================================================
+Mark and sweep
+Generational
+Incremental
+
+Tree of objects
+=====================
+Let's say, we have declared an array i.e a = [{"b" => c"}]
+Ruby creates this object like a tree of objects i.e
+
+  Root(conceptual object)
+   |
+   Array
+   |
+   Hash
+   /\ 
+string string
+
+GC's job is to free to those objects which are no longer attached to root i.e the conceptual object.
+if we assign a = nil than a is no longer attached to root and GC can free this
+         
+Mark and sweep
+===============
+Traverse the tree object types and checks the adjacent sides and sweeps the unmarked once(no longer attached to root).
+   
+   Advantages
+   ==========
+   Easy to understand
+   
+   Disadvantages
+   =============
+   Very slow
+   it stops the program while executing
+   we have to visits all the objects to the every single time
+
+Generational
+============
+To overcome the disadvantages of mark and sweep algoritham, it says objects die young.
+   
+   how this works
+   ===========
+   It divides the object into new and old generation objects and GC's mark and sweep algoritham runs for new generational objects and after the result those objects  moved to old generation objects.
+
+   Advantages
+   ===========
+     We are not moving each and every object
+     if any old generation object allocates any memory to new one then we use write barrier i.e piece of code to responsible for remembering the set and from that node and moving to old generation with pointing the object in proper way.
+
+   Disadvantages
+   ==============
+   Not easy to implement and it stops the world too.
+
+Incremental GC
+===============
+
+  It uses tri color marking, White marked objects - will be collected, Black marked objects - no reference to white objects but reachable from root and Grey marked objects - reachable from root but yet to be scanned.
+
+GC does not run in parallel and it's not real time i.e we can't gurantee how long it will stops the world.
+  
+  Advantages
+  ==========
+  Takes small amount of objects and stops the world, here we are stopping the world frequently but for small amount of time.
+
+How ruby allocates memory
+=========================
+Ruby allocates memory as page,inside the page there are slots and they were linked to each other.
+One ruby page is 16 kilo bytes and one object is 40 bytes.
+In ruby if an objects representation ends with 000 then we can say it is a ruby object.
+Objects in ruby cannot move from page to page/slab to slab this causes copy on write issue i.e In ruby if parent and child process uses the same page and child process writes the object in that page and that will break for parent process then Os will copy this object in a page i.e I have created a object of 40 bytes and but OS copied it into 4kb.
+Operating system also has page but it's not equal to ruby page.
+Size of ruby page is 16kb and that of OS page is 4kb.
+
+Note - In ruby not every object requires allocation i.e Fixnum, Floats, True/False/Nil and Symbols are not required to allocate memory.
+
+GC introspection API
+====================
+  GC.stat
+
+  GC Performance
+  ==================
+  GC::Profiler
+  GC::Profiler.enable
+  GC::Profiler.report
+  GC.start
+  GC::Profiler.report
+
+require 'objspace'
+ x = Object.new
+ ObjectSpace.dump x
+  =>  2.4.0 :003 > ObjectSpace.dump x
+ => "{\"address\":\"0x0000000262cee0\", \"type\":\"OBJECT\", \"class\":\"0x00000002495870\", \"ivars\":0, \"memsize\":40, \"flags\":{\"wb_protected\":true}}\n"
+
+GC Tuning Features
+==================
+RUBY_GC_HEAP_FREE_SLOTS -- Number of free slots available after GC runs
+RUBY_GC_HEAP_INIT_SLOTS -- Number of free slots to initilaize with GC
+RUBY_GC_HEAP_GROWTH_MAX_SLOTS -- Number grow more than this many objects 
+
+    
+  
+
+
+ 
+ 
