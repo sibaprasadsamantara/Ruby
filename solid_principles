@@ -1,0 +1,37 @@
+SOLID
+  1 S - Single Responsiblity Principle
+  2 O - Open and Closed Principle
+  3 L - Liskov Substituion Principle
+  4 I - Interface Segaration Principle
+  5 D - Dependency Inversion Principle
+  6 
+  7 S - Single Responsibility Principle
+  8 ===================================
+  9 
+ 10   Anything that gives reason to change the class and method called a responsibility
+ 11 
+ 12   Benefits
+ 13   ========
+ 14     Your classes/methods will be really small and maintainable and easy to understand
+ 15 
+ 16 O - Open/Closed Principle
+ 17 ==========================
+ 18 
+ 19   It says classes or methods should be open for extension and closed for modification.It's generally achieveable by using the pattern called stratgey pattern.
+ 20 
+ 21 L - Liskov Substitution Principle
+ 22 =================================
+ 23   It says you should be able to replace the instances of the parent class with one of its instances of children class without creating an unexpected behaviour
+ 24 
+ 25 I - Interface Segaration principle
+ 26 ==================================
+ 27 
+ 28   client should not be forced depend on the methods that it does not use.
+ 29 
+ 30   Dynamic type languages does not violate this rule because of Duck Typing
+ 31 
+ 32 D - Dependency inversion principle
+ 33 ==================================
+ 34 
+ 35   It says that high level object i.e think about the business logic not depends on the low level implementation details i.e database querying and IO.
+ 36   Duck typing and Open/Closed principle plays major role to get this.
